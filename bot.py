@@ -1,39 +1,60 @@
 import discord
-
-# import * - es una forma rápida de importar todos los archivos de la biblioteca
+import random
+from discord.ext import commands
 from bot_logic import *
 
-# La variable intents almacena los privilegios del bot
 intents = discord.Intents.default()
-# Activar el privilegio de lectura de mensajes
 intents.message_content = True
-# Crear un bot en la variable cliente y transferirle los privilegios
-client = discord.Client(intents=intents)
 
+bot = commands.Bot(command_prefix='$', intents=intents)
 
-# Una vez que el bot esté listo, ¡imprimirá su nombre!
-@client.event
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
 
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
 
-# Cuando el bot reciba un mensaje, ¡enviará mensajes en el mismo canal!
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith('$hello'):
-        await message.channel.send('¡Hola! Soy un bot')
-    elif message.content.startswith('$smile'):
-        await message.channel.send(gen_emodji())
-    elif message.content.startswith('$coin'):
-        await message.channel.send(flip_coin())
-    elif message.content.startswith('$pass'):
-        await message.channel.send(gen_pass(10))
-    elif message.content.startswith("$bye"):
-        await message.channel.send("\\U0001f600")
-    else:
-        await message.channel.send("No puedo procesar este comando, ¡lo siento!")
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
 
+@bot.command()
+async def bye(ctx):
+    await ctx.send("😟")
 
-client.run("Aqui va la llave")
+@bot.command()
+async def abc(ctx):
+    await ctx.send("abcdefghijklmnopqrstuvwxyz")
+
+@bot.command()
+async def coin(ctx):
+    await ctx.send(flip_coin())
+
+@bot.command()
+async def pas(ctx):
+    await ctx.send(gen_pass(10))
+
+@bot.command()
+async def alien(ctx):
+    await ctx.send("👽")
+
+@bot.command()
+async def add(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
+
+@bot.command()
+async def re(ctx, left: int, right: int):
+    await ctx.send(left - right)
+
+@bot.command()
+async def mult(ctx, left: int, right: int):
+    await ctx.send(left * right)
+
+@bot.command()
+async def div(ctx, left: int, right: int):
+    await ctx.send(left / right)
+
+bot.run("aqui va el token")
